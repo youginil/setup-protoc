@@ -1,0 +1,17 @@
+name: "Setup Protoc"
+description: "Protoc installation"
+inputs:
+  version:
+    description: "Protoc release version. https://github.com/protocolbuffers/protobuf/releases"
+    required: true
+    default: "25.1"
+outputs:
+  version:
+    description: "Protoc version"
+  url:
+    description: "The protoc release url"
+  path:
+    description: "Protoc path"
+runs:
+  using: "node20"
+  main: "dist/main.js"
