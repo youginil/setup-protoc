@@ -28609,7 +28609,6 @@ exports.genDlUrl = void 0;
 const core = __importStar(__nccwpck_require__(9093));
 const tc = __importStar(__nccwpck_require__(5561));
 const os_1 = __importDefault(__nccwpck_require__(2037));
-const child_process_1 = __nccwpck_require__(2081);
 const path_1 = __importDefault(__nccwpck_require__(1017));
 function genDlUrl(version, platform, arch) {
     let filename = '';
@@ -28619,24 +28618,22 @@ function genDlUrl(version, platform, arch) {
     }
     else {
         let ar;
-        switch (arch) {
-            case 'x64': {
-                ar = 'x86_64';
-            }
-            case 'arm64': {
-                ar = 'aarch_64';
-            }
-            case 's390x': {
-                ar = 's390_64';
-            }
-            case 'ppc64': {
-                ar = 'ppcle_64';
-            }
-            default: {
-                ar = 'x86_32';
-            }
+        if (arch === 'x64') {
+            ar = 'x86_64';
         }
-        if (platform == 'darwin') {
+        else if (arch === 'arm64') {
+            ar = 'aarch_64';
+        }
+        else if (arch === 's390x') {
+            ar = 's390_64';
+        }
+        else if (arch === 'ppc64') {
+            ar = 'ppcle_64';
+        }
+        else {
+            ar = 'x86_32';
+        }
+        if (platform === 'darwin') {
             filename = `protoc-${version}-osx-${ar}.zip`;
         }
         else {
@@ -28666,7 +28663,6 @@ exports.genDlUrl = genDlUrl;
         }
         core.setOutput('path', targetDir);
         core.addPath(path_1.default.join(targetDir, 'bin'));
-        (0, child_process_1.execSync)('protoc --version');
     }
     catch (error) {
         core.setFailed(error.message);

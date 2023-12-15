@@ -25,7 +25,7 @@ export function genDlUrl(
         } else {
             ar = 'x86_32';
         }
-        if (platform == 'darwin') {
+        if (platform === 'darwin') {
             filename = `protoc-${version}-osx-${ar}.zip`;
         } else {
             filename = `protoc-${version}-linux-${ar}.zip`;
