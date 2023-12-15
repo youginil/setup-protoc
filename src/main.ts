@@ -1,7 +1,6 @@
 import * as core from '@actions/core';
 import * as tc from '@actions/tool-cache';
 import os from 'os';
-import { execSync } from 'child_process';
 import path from 'path';
 
 export function genDlUrl(
@@ -15,22 +14,16 @@ export function genDlUrl(
         filename = `protoc-${version}-win${a}.zip`;
     } else {
         let ar: string;
-        switch (arch) {
-            case 'x64': {
-                ar = 'x86_64';
-            }
-            case 'arm64': {
-                ar = 'aarch_64';
-            }
-            case 's390x': {
-                ar = 's390_64';
-            }
-            case 'ppc64': {
-                ar = 'ppcle_64';
-            }
-            default: {
-                ar = 'x86_32';
-            }
+        if (arch === 'x64') {
+            ar = 'x86_64';
+        } else if (arch === 'arm64') {
+            ar = 'aarch_64';
+        } else if (arch === 's390x') {
+            ar = 's390_64';
+        } else if (arch === 'ppc64') {
+            ar = 'ppcle_64';
+        } else {
+            ar = 'x86_32';
         }
         if (platform == 'darwin') {
             filename = `protoc-${version}-osx-${ar}.zip`;
@@ -60,7 +53,6 @@ export function genDlUrl(
         }
         core.setOutput('path', targetDir);
         core.addPath(path.join(targetDir, 'bin'));
-        execSync('protoc --version');
     } catch (error: any) {
         core.setFailed(error.message);
     }
