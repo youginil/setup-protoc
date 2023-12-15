@@ -28569,6 +28569,29 @@ exports["default"] = _default;
 
 "use strict";
 
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -28583,8 +28606,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.genDlUrl = void 0;
-const core_1 = __importDefault(__nccwpck_require__(9093));
-const tool_cache_1 = __importDefault(__nccwpck_require__(5561));
+const core = __importStar(__nccwpck_require__(9093));
+const tc = __importStar(__nccwpck_require__(5561));
 const os_1 = __importDefault(__nccwpck_require__(2037));
 const child_process_1 = __nccwpck_require__(2081);
 const path_1 = __importDefault(__nccwpck_require__(1017));
@@ -28625,28 +28648,28 @@ function genDlUrl(version, platform, arch) {
 exports.genDlUrl = genDlUrl;
 (() => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const version = core_1.default.getInput('version');
+        const version = core.getInput('version');
         const platform = os_1.default.platform();
         const arch = os_1.default.arch();
         console.log(`Platform: ${platform}, Arch: ${arch}`);
         const url = genDlUrl(version, platform, arch);
         console.log(`Downloading from ${url}`);
-        core_1.default.setOutput('url', url);
-        let targetDir = tool_cache_1.default.find('protoc', version);
+        core.setOutput('url', url);
+        let targetDir = tc.find('protoc', version);
         if (targetDir) {
             console.log('Protoc is cached');
         }
         else {
-            const dlpath = yield tool_cache_1.default.downloadTool(url);
-            const extractDir = yield tool_cache_1.default.extractZip(dlpath);
-            targetDir = yield tool_cache_1.default.cacheDir(extractDir, 'protoc', version);
+            const dlpath = yield tc.downloadTool(url);
+            const extractDir = yield tc.extractZip(dlpath);
+            targetDir = yield tc.cacheDir(extractDir, 'protoc', version);
         }
-        core_1.default.setOutput('path', targetDir);
-        core_1.default.addPath(path_1.default.join(targetDir, 'bin'));
+        core.setOutput('path', targetDir);
+        core.addPath(path_1.default.join(targetDir, 'bin'));
         (0, child_process_1.execSync)('protoc --version');
     }
     catch (error) {
-        core_1.default.setFailed(error.message);
+        core.setFailed(error.message);
     }
 }))();
 
